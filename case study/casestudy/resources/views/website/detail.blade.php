@@ -231,6 +231,7 @@
 }
 a.navbar-brand {
     font-weight: 600;
+    
 }
 .navbar-brand span {
     color: rgb(56, 172, 87);
@@ -262,12 +263,40 @@ a.btn.btn-primary {
 }
 .fa, .fas {
     font-weight: 900;
-    font-size: 38px;
+    font-size: 29px;
     margin: 6px -58px 0px 31px;
 }
 .fa-cart-plus:before {
     content: "\f217";
     color: red;
+}
+input.minus.is-form {
+    background: black;
+    color: white;
+    width: 32px;
+    border-radius: 5px;
+}
+input.plus.is-form {
+  background: black;
+    color: white;
+    width: 32px;
+    border-radius: 5px;
+}
+input.input-qty {
+    text-align: center;
+}
+.product-dtl {
+    text-align: left;
+}
+ol.breadcrumb {
+    padding: 0;
+    margin: 26px -20px 0px -12px;
+    background: white;
+}
+
+.fa-angle-left:before {
+    content: "\f104";
+    font-size: 15px;
 }
 </style>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -281,11 +310,18 @@ a.btn.btn-primary {
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"><div class="pd-wrap">
    {{-- @extends('Layouts.main2') --}}
    @include('Layouts.includes.website.sidebar')
-      
+   <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+       <li class="breadcrumb-item active">
+          <a href="{{route('home.index')}}" style="color: #000000"><i class="breadcrumb-icon fa fa-angle-left mr-2"></i>Trang
+             Chủ</a>
+       </li>
+    </ol>
+ </nav>
     <div class="container">
-          <div class="heading-section">
-              <h2>Thông Tin Chi Tiết </h2>
-          </div>
+      <div class="heading-section">
+     
+        <h2>Thông Tin Chi Tiết </h2>
           <div class="row">
             <div class="col-md-6">
               <div id="slider" class="owl-carousel product-slider">
@@ -371,14 +407,22 @@ a.btn.btn-primary {
                   </div>
                 </div>
                 <div class="product-count">
-                  <label for="size">Quantity</label>
-                  <form action="#" class="display-flex">
+                  {{-- <label for="size">Quantity</label> --}}
+                  {{-- <form action="#" class="display-flex">
                   <div class="qtyminus">-</div>
-                  <input type="text" name="quantity" value="1" class="qty">
+                  <input type="text" name="quantity" value="1" min="1" max="{{$product->quantity}}" class="qty">
                   <div class="qtyplus">+</div>
-              </form>
-              <button  href="{{route('home.addtocart',$product->id)}}" class="round-black-btn">Thêm Vào Giỏ Hàng</button>
-              <a href="#" class="btn btn-primary" onclick="history.go(-1)">Quay Lại</a>
+              </form> --}}
+              
+                {{-- <div class="buttons_added">
+                   <input class="minus is-form" type="button" value="-">
+                   <input aria-label="quantity" class="input-qty" max="{{$product->quantity}}" min="1" name="quantity" type="number" value="1">
+                   <input class="plus is-form" type="button" value="+">
+                 </div> --}}
+            
+              <a  href="{{route('home.addtocart',$product->id)}}" class="round-black-btn">Thêm Vào Giỏ Hàng</a>
+              <a href="{{route('home.cart')}}" class="btn btn-primary">Mua Ngay</a>
+              <a onclick="history.go(-1)" class="btn btn-primary">Quay Lại</a>
 
                 </div>
               </div>
@@ -511,19 +555,39 @@ a.btn.btn-primary {
         });
 
 
-            $(".qtyminus").on("click",function(){
-                var now = $(".qty").val();
-                if ($.isNumeric(now)){
-                    if (parseInt(now) -1> 0)
-                    { now--;}
-                    $(".qty").val(now);
-                }
-            })            
-            $(".qtyplus").on("click",function(){
-                var now = $(".qty").val();
-                if ($.isNumeric(now)){
-                    $(".qty").val(parseInt(now)+1);
-                }
-            });
+            // $(".qtyminus").on("click",function(){
+            //     var now = $(".qty").val();
+            //     if ($.isNumeric(now)){
+            //         if (parseInt(now) -1> 0)
+            //         { now--;}
+            //         $(".qty").val(now);
+            //     }
+            // })            
+            // $(".qtyplus").on("click",function(){
+            //     var now = $(".qty").val();
+            //     if ($.isNumeric(now)){
+            //         $(".qty").val(parseInt(now)+1);
+            //     }
+            // });
+            
+
+            $('input.input-qty').each(function() {
+  var $this = $(this),
+    qty = $this.parent().find('.is-form'),
+    min = Number($this.attr('min')),
+    max = Number($this.attr('max'))
+  if (min == 0) {
+    var d = 0
+  } else d = min
+  $(qty).on('click', function() {
+    if ($(this).hasClass('minus')) {
+      if (d > min) d += -1
+    } else if ($(this).hasClass('plus')) {
+      var x = Number($this.val()) + 1
+      if (x <= max) d += 1
+    }
+    $this.attr('value', d).val(d)
+  })
+})
     });
   </script>

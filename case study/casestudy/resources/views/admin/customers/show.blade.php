@@ -14,9 +14,6 @@
                <th>Tên Khách Hàng: {{ $customer->name }}</th>
             </tr>
             <tr>
-               <th>Tuổi: {{ $customer->age }}</th>
-            </tr>
-            <tr>
                <th>Số Điện Thoại: {{ $customer->phone }}
                </th>
             </tr>

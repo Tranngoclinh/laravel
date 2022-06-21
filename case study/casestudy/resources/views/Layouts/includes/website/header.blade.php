@@ -6,11 +6,11 @@
           <div class="text w-100 text-center mb-md-5 pb-md-5">
             @if (isset($admin))
               
-            <h1 class="mb-4">Chào Mừng <span style="color: red">{{$admin->name}}</span> Đến Với CarShop</h1>
+            <h1 class="mb-4">Chào Mừng <span style="color: red">{{$admin->name}} </span> Đến Với CarShop</h1>
             @endif
             @if (!isset($admin))
               
-            <h1 class="mb-4">Chào Mừng Quý Khách Đến Với CarShop</h1>
+            <h1 class="mb-4">Xe shop như CarShop</h1>
             @endif
             </a>
          </div>

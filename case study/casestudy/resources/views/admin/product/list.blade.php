@@ -2,7 +2,7 @@
 @section('title', 'Danh Sách Sản Phẩm')
 
 @section('body')
-<script>
+{{-- <script>
    $(document).ready(function(){
      $("#myInput").on("keyup", function() {
        var value = $(this).val().toLowerCase();
@@ -11,7 +11,7 @@
        });
      });
    });
-   </script>
+   </script> --}}
 <div class="col-12">
    <div class="row">
       <div class="col-12">

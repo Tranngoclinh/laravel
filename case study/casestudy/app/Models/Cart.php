@@ -36,6 +36,8 @@ class Cart extends Model
         $productStore['totalPrice']+= $product->price; 
         $this->items[$product->id] = $productStore;
         $this->totalQty++;
+        // dd($this->totalPrice);
         $this->totalPrice += $product->price;
+
     }
 }

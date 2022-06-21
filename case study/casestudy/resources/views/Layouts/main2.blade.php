@@ -31,4 +31,3 @@
      @include('Layouts.includes.website.sidebar')
      @yield('title')
      @include('Layouts.includes.website.footer')
- 

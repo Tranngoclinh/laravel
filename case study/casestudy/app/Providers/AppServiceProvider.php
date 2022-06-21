@@ -26,7 +26,6 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(Repository::class, EloquentRepository::class);
-
         $this->app->singleton(CustomerServiceImpl::class, CustomerService::class);
         $this->app->singleton(CustomerRepositoryImpl::class, CustomerRepository::class);
     }
@@ -52,7 +51,10 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             $admin = Auth::guard('admin_login')->user();
             $view->with('admin', $admin);
-
+        });
+        View::composer('*', function ($view) {
+            $cart = session()->get('cart');
+            $view->with('cart', $cart);
         });
      
      }

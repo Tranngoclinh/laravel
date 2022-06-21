@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\website;
 
 use App\Http\Controllers\Controller;
+use App\Models\admin\CustomerModel;
 use App\Models\admin\ProductModel;
 use App\Models\Cart;
-use Illuminate\Contracts\Session\Session;
+// use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Session as FacadesSession;
 
 class HomeController extends Controller
@@ -20,7 +22,7 @@ class HomeController extends Controller
     {
         $products = ProductModel::all();
         // dd($products);
-        return view('website.index',compact('products'));
+        return view('website.index', compact('products'));
     }
 
     /**
@@ -32,80 +34,90 @@ class HomeController extends Controller
     {
         $product = ProductModel::findOrFail($id);
         // dd($products);
-        return view('website.detail',compact('product'));
+        return view('website.detail', compact('product'));
     }
-
+    public function cart()
+    {
+        return view('website.cart');
+    }
     public function addToCart(Request $request, $id)
-{
-   $product = ProductModel::findOrFail($id);
-   dd($product);
-   $oldCart = $request->session()->get('cart');
-   $newCart = new Cart($oldCart);
-   $newCart->add($product);
-   $request->session()->put('cart', $newCart);
-   $request->session()->flash('success', 'Them sp vao gio hang thang cong');
-   return back();
-}
-
-public function getCart(Request $request)
-{
-   $cart = $request->session()->get('cart');
-   return view('website.cart', compact('cart'));
-}
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
     {
-        //
+        $product = ProductModel::findOrFail($id);
+        $cart = session()->get('cart', []);
+        if (isset($cart[$id])) {
+            $cart[$id]['quantity']++;
+            // dd($cart[$id]);
+        } else {
+            $cart[$id] = [
+                "name" => $product->name,
+                "quantity" =>1,
+                "price" => $product->price,
+                "image" => $product->image,
+                "product" => $product->id, 
+            ];
+        }
+        // dd($cart);
+
+        // $total = $product->price*$product->quantity;
+        session()->put('cart', $cart);
+        return redirect()->back()->with('success', 'Product added to cart successfully!');
+        return back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function updatecart(Request $request)
     {
-        //
+        if ($request->id && $request->quantity) {
+            $cart = session()->get('cart');
+            $cart[$request->id]["quantity"] = $request->quantity;
+            session()->put('cart', $cart);
+            session()->flash('success', 'Cart updated successfully');
+        }
+    }
+    
+    public function getCart(Request $request)
+    {
+        if ($request->id) {
+            $cart = session()->get('cart');
+            if (isset($cart[$request->id])) {
+                unset($cart[$request->id]);
+                session()->put('cart', $cart);
+            }
+            session()->flash('success', 'Product removed successfully');
+        }
+    }
+    public function remove(Request $request,$id)
+    {
+        if ($request->id) {
+            $cart = session()->get('cart');
+            // dd($cart);
+            if (isset($cart[$request->id])) {
+                unset($cart[$request->id]);
+                session()->put('cart', $cart);
+            }
+            // session()->flash('success', 'Product removed successfully');
+            return view('website.cart');
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //
     }
+
+    public function ordered(Request $request){
+        $customer = new CustomerModel();
+        $customer->name = $request->name;
+        $customer->email = $request->email;
+        $customer->address = $request->address;
+        $customer->phone = $request->phone;
+        $customer->save();
+        Session::flash('success', 'Đã Đặt Hàng');
+        return redirect()->route('home.cart');
+    }
+
+    public function cars(){
+        $products = ProductModel::all();
+        return view('website.car',compact('products'));
+    }
+
 }

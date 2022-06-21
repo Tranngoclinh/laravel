@@ -25,6 +25,6 @@ class UpdateCustomerTable extends Migration
      */
     public function down()
     {
-        //
+    
     }
 }

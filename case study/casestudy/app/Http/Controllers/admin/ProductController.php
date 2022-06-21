@@ -22,19 +22,13 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $products = ProductModel::paginate(5);
-        // dd(count($products));
+        // dd($products);
         $search = $request->search;
-        // $category = $request->category_id;
         $products = ProductModel::select('*');
         if ($search) {
             $products = $products->where('name', 'like', '%' . $search . '%')->orwhere('id', $search);
         }
-        // if ($category) {
-        //     $products = $products->where('category_id', 'like', '%' . $category . '%');
-        // }
         $products = $products->paginate(5);
-
-        // dd($products);
         return view('admin.product.list', compact('products', 'search'));
     }
 

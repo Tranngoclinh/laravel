@@ -11,6 +11,7 @@ use App\Models\admin\CategoriModel;
 use App\Models\admin\LoginModel;
 use App\Models\Phone;
 use App\Models\User;
+use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,9 +37,6 @@ Route::post('/register', [AuthLoginController::class, 'register'])->name('regist
 Route::get('/logout', [AuthLoginController::class, 'logout'])->name('logout');
 
 
-// Route::prefix()->group(function () {
-
-// });
 Route::group([
     'prefix' => 'admin',
     'middleware' => ['auth:admin_login']
@@ -70,14 +68,18 @@ Route::group([
 Route::get('homeshop',function(){
     return view('website.index');    
 })->name('homelogin');
+Route::get('cars',[HomeController::class,'cars'])->name('cars');
 Route::group([
     'prefix' => 'carshop',
     'middleware' => ['auth:admin_login']
 ], function () {
 Route::resource('home',HomeController::class);
 Route::get('detail/{id}',[HomeController::class,'detail'])->name('home.detail');
-Route::get('cart',[HomeController::class,'getCart'])->name('home.getcart');
+Route::get('cart',[HomeController::class,'cart'])->name('home.cart');
 Route::get('addtocart/{id}',[HomeController::class,'addToCart'])->name('home.addtocart');
+Route::get('update-cart', [HomeController::class, 'updatecart'])->name('update.cart');
+Route::get('remove-from-cart/{id}', [HomeController::class, 'remove'])->name('remove.from.cart');
+Route::get('oder',[HomeController::class,'ordered'])->name('cart.ordered');
 });
 // Route::get('loginshop',[WebsiteLoginController::class,'login'])->name('loginshop');
 // Route::get('registershop',[WebsiteLoginController::class,'register'])->name('registershop');

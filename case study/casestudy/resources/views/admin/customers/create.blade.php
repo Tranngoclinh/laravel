@@ -16,13 +16,13 @@
                           <p style="color:red">{{ $errors->first('name') }}</p>
                         @endif
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label>Tuổi khách hàng</label>
                         <input type="number" class="form-control" name="age" placeholder="Nhập tuổi khách hàng" >
                         @if ($errors->any())
                           <p style="color:red">{{ $errors->first('age') }}</p>
                         @endif
-                    </div>
+                    </div> --}}
                     <div class="form-group">
                         <label for="exampleInputEmail1">Email</label>
                         <input type="email" class="form-control" name="email" placeholder="Nhập email" >

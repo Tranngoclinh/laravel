@@ -25,8 +25,10 @@
                            <span class="cat">Giá :</span>
                            <p class="price ml-auto">{{ number_format($product->price) }} <span>VNĐ</span></p>
                         </div>
-                        <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Mua Ngay</a> <a
-                              href="{{route('home.detail',$product->id)}}" class="btn btn-secondary py-2 ml-1">Xem Chi Tiết</a></p>
+                        <p class="d-flex mb-0 d-block">
+                           <a href="{{route('home.addtocart',$product->id)}}" class="btn btn-primary py-2 mr-1">Add To Cart</a> 
+                           <a href="{{route('home.detail',$product->id)}}" class="btn btn-secondary py-2 ml-1">Xem Chi Tiết</a>
+                        </p>
                      </div>
                   </div>
                </a>

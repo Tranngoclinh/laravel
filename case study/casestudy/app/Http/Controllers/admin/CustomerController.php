@@ -51,7 +51,6 @@ class CustomerController extends Controller
     {
         $customer = new CustomerModel();
         $customer->name = $request->name;
-        $customer->age = $request->age;
         $customer->email = $request->email;
         $customer->address = $request->address;
         $customer->phone = $request->phone;
@@ -98,7 +97,6 @@ class CustomerController extends Controller
     {
         $customer = CustomerModel::findOrFail($id);
         $customer->name = $request->name;
-        $customer->age = $request->age;
         $customer->email = $request->email;
         $customer->phone = $request->phone;
         $customer->address = $request->address;
